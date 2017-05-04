@@ -10,83 +10,136 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    var cities: [City] = []
+    var numberOfCities = 10
+    var order: [Int] = []
+    var population: [[Int]] = []
+    var populationSize = 100
+    var fitness:[CGFloat] = []
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    //Distances
+    var recordDistance = CGFloat.infinity
+    var bestEver: [Int] = []
     
     override func didMove(to view: SKView) {
-        
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
+        for i in 0...numberOfCities - 1{
+            cities.append(City())
+            addChild(cities[i])
+            order.append(i)
         }
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        for _ in 0...populationSize - 1{
+            population.append(order)
+            order.shuffle()
+        }
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(M_PI), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func mouseDown(with event: NSEvent) {
-        self.touchDown(atPoint: event.location(in: self))
-    }
-    
-    override func mouseDragged(with event: NSEvent) {
-        self.touchMoved(toPoint: event.location(in: self))
-    }
-    
-    override func mouseUp(with event: NSEvent) {
-        self.touchUp(atPoint: event.location(in: self))
-    }
-    
-    override func keyDown(with event: NSEvent) {
-        switch event.keyCode {
-        case 0x31:
-            if let label = self.label {
-                label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+        for i in 0...population.count - 1 {
+            let d = calcDistance(points: cities, order: population[i])
+            if d < recordDistance{
+                recordDistance = d
+                bestEver = population[i]
             }
-        default:
-            print("keyDown: \(event.characters!) keyCode: \(event.keyCode)")
+            fitness.append(d)
+        }
+        
+        calcFitness()
+        normaliseFitness()
+        nextGeneration()
+        draw()
+    }
+    
+    func draw(){
+        enumerateChildNodes(withName: "line"){ node, _ in
+            let line = node
+            line.removeFromParent()
+        }
+        
+        for i in 0...numberOfCities - 2{
+            let n = bestEver[i]
+            let n2 = bestEver[i + 1]
+            let path = CGMutablePath()
+            path.move(to: cities[n].position)
+            path.addLine(to: cities[n2].position)
+            let shape = SKShapeNode()
+            shape.path = path
+            shape.strokeColor = .white
+            shape.lineWidth = 2
+            shape.name = "line"
+            addChild(shape)
         }
     }
     
+    func calcDistance(points: [SKNode], order: [Int]) -> CGFloat{
+        var distance: CGFloat = 0
+        for i in 0...numberOfCities - 2{
+            let n = order[i]
+            let n2 = order[i + 1]
+            distance += points[n].position.distance(to: points[n2].position)
+        }
+        return distance
+    }
+    
+    func calcFitness(){
+        for i in 0...population.count - 1 {
+            let d = calcDistance(points: cities, order: population[i])
+            if d < recordDistance{
+                recordDistance = d
+                bestEver = population[i]
+            }
+            fitness[i] = 1/(d + 1)
+        }
+    }
+    
+    func normaliseFitness(){
+        var sum:CGFloat = 0
+        for i in 0...fitness.count - 1 {
+            sum += fitness[i]
+        }
+        
+        for i in 0...fitness.count - 1 {
+            fitness[i] += fitness[i] / sum
+        }
+    }
+    
+    func nextGeneration(){
+        var newPopulation: [[Int]] = []
+        for _ in 0...population.count - 1 {
+            var order = pickOne(list: population, prob: fitness)
+            mutate(order: &order, mutationRate: 1)
+            newPopulation.append(order)
+        }
+        population = newPopulation
+    }
+    
+    func pickOne(list:[[Int]], prob: [CGFloat]) -> [Int]{
+        var index = 0
+        var r = CGFloat(arc4random_uniform(9) + 1)
+        r = r / 10
+        
+        while r > 0{
+            r = r - prob[index]
+            index += 1
+        }
+        index -= 1
+        return list[index]
+    }
+    
+    func mutate(order: inout [Int], mutationRate: Int){
+        order.shuffle()
+    }
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        for i in 0...population.count - 1 {
+            let d = calcDistance(points: cities, order: population[i])
+            if d < recordDistance{
+                recordDistance = d
+                bestEver = population[i]
+            }
+        }
+        
+        calcFitness()
+        normaliseFitness()
+        nextGeneration()
+        draw()
     }
 }
