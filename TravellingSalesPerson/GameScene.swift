@@ -14,7 +14,7 @@ class GameScene: SKScene {
     var numberOfCities = 10
     var order: [Int] = []
     var population: [[Int]] = []
-    var populationSize = 100
+    var populationSize = 1000
     var fitness:[CGFloat] = []
     
     //Distances
@@ -105,7 +105,7 @@ class GameScene: SKScene {
         var newPopulation: [[Int]] = []
         for _ in 0...population.count - 1 {
             var order = pickOne(list: population, prob: fitness)
-            mutate(order: &order, mutationRate: 1)
+            mutate(order: &order, mutationRate: 0.01)
             newPopulation.append(order)
         }
         population = newPopulation
@@ -113,8 +113,8 @@ class GameScene: SKScene {
     
     func pickOne(list:[[Int]], prob: [CGFloat]) -> [Int]{
         var index = 0
-        var r = CGFloat(arc4random_uniform(9) + 1)
-        r = r / 10
+        var r = CGFloat(arc4random_uniform(99) + 1)
+        r = r / 100
         
         while r > 0{
             r = r - prob[index]
@@ -124,8 +124,10 @@ class GameScene: SKScene {
         return list[index]
     }
     
-    func mutate(order: inout [Int], mutationRate: Int){
-        order.shuffle()
+    func mutate(order: inout [Int], mutationRate: CGFloat){
+        let indexA = Int(arc4random_uniform(UInt32(order.count)))
+        let indexB = Int(arc4random_uniform(UInt32(order.count)))
+        order.swap(a: indexA, b: indexB)
     }
     
     override func update(_ currentTime: TimeInterval) {
