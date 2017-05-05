@@ -17,6 +17,14 @@ extension Array{
         }
     }
     
+    mutating func shuffleSameStartEnd(){
+        for _ in 0...100{
+            let indexA = Int(arc4random_uniform(UInt32(self.count - 2))) + 1
+            let indexB = Int(arc4random_uniform(UInt32(self.count - 2))) + 1
+            swap(a: indexA, b: indexB)
+        }
+    }
+    
     mutating func swap(a: Int, b: Int){
         let temp = self[a]
         self[a] = self[b]

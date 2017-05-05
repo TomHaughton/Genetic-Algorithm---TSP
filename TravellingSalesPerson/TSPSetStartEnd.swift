@@ -9,12 +9,12 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class TSPSetStartEnd: SKScene {
     var cities: [City] = []
-    var numberOfCities = 20
+    var numberOfCities = 15
     var order: [Int] = []
     var population: [[Int]] = []
-    var populationSize = 100
+    var populationSize = 1000
     var fitness:[CGFloat] = []
     
     //Distances
@@ -34,7 +34,7 @@ class GameScene: SKScene {
         
         for _ in 0...populationSize - 1{
             population.append(order)
-            order.shuffle()
+            order.shuffleSameStartEnd()
         }
         
         for i in 0...population.count - 1 {
@@ -129,9 +129,9 @@ class GameScene: SKScene {
     }
     
     func mutate(order: inout [Int]){
-//        order.shuffle()
-        let indexA = Int(arc4random_uniform(UInt32(order.count)))
-        let indexB = Int(arc4random_uniform(UInt32(order.count)))
+        //        order.shuffle()
+        let indexA = Int(arc4random_uniform(UInt32(order.count - 2))) + 1
+        let indexB = Int(arc4random_uniform(UInt32(order.count - 2))) + 1
         order.swap(a: indexA, b: indexB)
     }
     

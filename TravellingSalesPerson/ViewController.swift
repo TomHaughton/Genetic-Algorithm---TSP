@@ -18,12 +18,9 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         if let view = self.skView {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
+//            if let scene = SKScene(fileNamed: "GameScene") {
+            if let scene = SKScene(fileNamed: "SetStartEnd") {
                 scene.scaleMode = .aspectFill
-                
-                // Present the scene
                 view.presentScene(scene)
             }
             

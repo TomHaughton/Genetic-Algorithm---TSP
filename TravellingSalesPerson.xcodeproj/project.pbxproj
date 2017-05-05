@@ -17,6 +17,8 @@
 		E259C2681EBB60FE00E2B7FE /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = E259C2671EBB60FE00E2B7FE /* City.swift */; };
 		E27199C51EBB694600681A10 /* ArrayExtend.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27199C41EBB694600681A10 /* ArrayExtend.swift */; };
 		E27199C71EBB6C4300681A10 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27199C61EBB6C4300681A10 /* Utils.swift */; };
+		E27199CB1EBD003E00681A10 /* TSPSetStartEnd.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27199CA1EBD003E00681A10 /* TSPSetStartEnd.swift */; };
+		E27199CD1EBD02B900681A10 /* SetStartEnd.sks in Resources */ = {isa = PBXBuildFile; fileRef = E27199CC1EBD02B900681A10 /* SetStartEnd.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		E259C2671EBB60FE00E2B7FE /* City.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		E27199C41EBB694600681A10 /* ArrayExtend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtend.swift; sourceTree = "<group>"; };
 		E27199C61EBB6C4300681A10 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		E27199CA1EBD003E00681A10 /* TSPSetStartEnd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSPSetStartEnd.swift; sourceTree = "<group>"; };
+		E27199CC1EBD02B900681A10 /* SetStartEnd.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SetStartEnd.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +70,10 @@
 			children = (
 				E259C2521EBB60A400E2B7FE /* AppDelegate.swift */,
 				E259C2541EBB60A400E2B7FE /* GameScene.sks */,
+				E27199CC1EBD02B900681A10 /* SetStartEnd.sks */,
 				E259C2561EBB60A400E2B7FE /* Actions.sks */,
 				E259C2581EBB60A400E2B7FE /* GameScene.swift */,
+				E27199CA1EBD003E00681A10 /* TSPSetStartEnd.swift */,
 				E259C25A1EBB60A400E2B7FE /* ViewController.swift */,
 				E259C25C1EBB60A400E2B7FE /* Assets.xcassets */,
 				E259C25E1EBB60A500E2B7FE /* Main.storyboard */,
@@ -140,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E259C2551EBB60A400E2B7FE /* GameScene.sks in Resources */,
+				E27199CD1EBD02B900681A10 /* SetStartEnd.sks in Resources */,
 				E259C25D1EBB60A400E2B7FE /* Assets.xcassets in Resources */,
 				E259C2571EBB60A400E2B7FE /* Actions.sks in Resources */,
 				E259C2601EBB60A500E2B7FE /* Main.storyboard in Resources */,
@@ -153,6 +160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E27199CB1EBD003E00681A10 /* TSPSetStartEnd.swift in Sources */,
 				E259C25B1EBB60A400E2B7FE /* ViewController.swift in Sources */,
 				E259C2591EBB60A400E2B7FE /* GameScene.swift in Sources */,
 				E27199C51EBB694600681A10 /* ArrayExtend.swift in Sources */,
