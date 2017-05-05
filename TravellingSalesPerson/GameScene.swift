@@ -22,6 +22,10 @@ class GameScene: SKScene {
     var bestEver: [Int] = []
     
     override func didMove(to view: SKView) {
+        instantiate()
+    }
+    
+    func instantiate(){
         for i in 0...numberOfCities - 1{
             cities.append(City())
             addChild(cities[i])
@@ -125,6 +129,7 @@ class GameScene: SKScene {
     }
     
     func mutate(order: inout [Int], mutationRate: CGFloat){
+//        order.shuffle()
         let indexA = Int(arc4random_uniform(UInt32(order.count)))
         let indexB = Int(arc4random_uniform(UInt32(order.count)))
         order.swap(a: indexA, b: indexB)
@@ -143,5 +148,16 @@ class GameScene: SKScene {
         normaliseFitness()
         nextGeneration()
         draw()
+    }
+    
+    override func mouseDown(with event: NSEvent) {
+        removeAllChildren()
+        cities.removeAll()
+        order.removeAll()
+        population.removeAll()
+        fitness.removeAll()
+        recordDistance = CGFloat.infinity
+        bestEver.removeAll()
+        instantiate()
     }
 }

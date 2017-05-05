@@ -12,8 +12,8 @@ import SpriteKit
 class City:SKSpriteNode{
     
     init(){
-        let x = Int(arc4random_uniform(500)) - 250
-        let y = Int(arc4random_uniform(500)) - 250
+        let x = Int(arc4random_uniform(700)) - 350
+        let y = Int(arc4random_uniform(700)) - 350
         super.init(texture: nil, color: .red, size: CGSize(width: 10, height: 10))
         position = CGPoint(x: x, y: y)
     }
